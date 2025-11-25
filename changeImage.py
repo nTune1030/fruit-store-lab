@@ -1,34 +1,42 @@
-import os
+#!/usr/bin/env python3
+
+from pathlib import Path
 from PIL import Image
 
 """
 Image Processing (changeImage.py)
 Goal: Process raw images from ~/supplier-data/images/.
-Specs:
-    Size: Resize to 600x400 pixels.
-    Format: Convert from .TIFF to .JPEG.
-    Mode: Convert RGBA to RGB first.
-Next Step: Upload them using supplier_image_upload.py to http://[linux-instance-external-IP]/upload/.
+Specs: Resize to 600x400, Format: .JPEG, Mode: RGB.
 """
 
-SOURCE = "~/supplier-data.images"
-DEST = "http://[linux-instance-external-IP]/upload/"
+SOURCE_DIR = Path.home() / "supplier-data/images"
 
-def process(file):
-    img = Image.open(file)
-    print(f" [IMG] Converting {img.format} from {img.mode} to .JPEG (600x400)...")
-    img = img.resize((600, 400))
-    img = img.convert("RGB")
-    return img
+def process_image(file_path):
+    """
+    Opens an image, resizes, converts, and saves as JPEG.
+    """
+    try:
+        with Image.open(file_path) as img:
+
+            # image.tiff -> image.jpeg
+            new_path = file_path.with_suffix('.jpeg')
+
+            print(f" [IMG] Processing {file_path.name} -> {new_path.name}")
+
+            img.resize((600, 400)).convert("RGB").save(new_path, "JPEG")
+            
+    except OSError as e:
+        print(f"Error processing {file_path.name}: {e}")
 
 def main():
-    for image in os.listdir(os.path.expanduser(SOURCE)):
-        if image.endswith(".tiff"):
-            fp = os.path.join(os.path.expanduser(SOURCE), image)
-            processed_image = process(fp)
-            # Save the processed image as JPEG
-            processed_image.save(os.path.join(os.path.expanduser(SOURCE), image.replace(".tiff", ".jpeg")))
+    # Ensure directory exists before trying to loop
+    if not SOURCE_DIR.exists():
+        print(f"Error: Directory {SOURCE_DIR} does not exist.")
+        return
+
+    # Glob allows pattern matching (finding all .tiff files directly)
+    for file_path in SOURCE_DIR.glob("*.tiff"):
+        process_image(file_path)
 
 if __name__ == "__main__":
     main()
-
