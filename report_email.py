@@ -1,39 +1,53 @@
 #!/usr/bin/env python3
 
 """
-Docstring for report_email
-
-Import all the necessary libraries(os, datetime and reports) 
-that will be used to process the text data from the 
-supplier-data/descriptions directory into the format below:
-
-name: Apple
-weight: 500 lbs
-[blank line]
-name: Avocado
-weight: 200 lbs
-[blank line]
-
-Once you have completed this, call the main method which will 
-process the data and call the generate_report method from the reports module:
-if __name__ == "__main__":
-
-Pass the following arguments to the reports.generate_report method:
-the text description processed from the text files as the paragraph argument.
-the report title as the title argument.
-the file path of the PDF to be generated as the attachment argument.
-
-(use ‘/tmp/processed.pdf')
-reports.generate_report(attachment, title, paragraph)
-
-Once you define the generate_email and send_email methods,
-call the methods under the main method after creating the PDF report:
-
-Use the following details to pass the parameters to emails.generate_email():
-
-From: automation@example.com
-To: student@example.com
-Subject line: Upload Completed - Online Fruit Store
-E-mail Body: All fruits are uploaded to our website successfully. A detailed list is attached to this email.
-Attachment: Attach the path to the file processed.pdf
+report_email.py
+---------------
+The 'Manager' script. It coordinates:
+1. reports.py -> To generate the PDF.
+2. emails.py  -> To send the PDF via email.
 """
+
+import os
+import datetime
+import reports
+import emails
+
+def main():
+    # Configuration
+    SENDER = "automation@example.com"
+    
+    # Dynamic User Retrieval
+    USER = os.environ.get('USER')
+    RECIPIENT = f"{USER}@example.com"
+    SUBJECT = "Upload Completed - Online Fruit Store"
+    BODY = "All fruits are uploaded to our website successfully. A detailed list is attached to this email."
+    ATTACHMENT_PATH = "/tmp/processed.pdf"
+
+    # Generate the PDF
+    print("Generating PDF...")
+    
+    # process_data function from reports.py module
+    summary_paragraph = reports.process_data()
+    
+    today = datetime.date.today().strftime("%B %d, %Y")
+    title = f"Processed Update on {today}"
+    
+    reports.generate_report(ATTACHMENT_PATH, title, summary_paragraph)
+
+    print(f"Sending Email to {RECIPIENT}...")
+    
+    # Email object using emails.py module
+    message = emails.generate_email(
+        sender=SENDER,
+        recipient=RECIPIENT,
+        subject=SUBJECT,
+        body=BODY,
+        attachment_path=ATTACHMENT_PATH
+    )
+    
+    emails.send_email(message)
+    print("✅ Email sent successfully.")
+
+if __name__ == "__main__":
+    main()
