@@ -45,7 +45,7 @@ def upload_images():
             # 3. Send the POST request
             try:
                 # The API expects the file in the 'file' field
-                response = requests.post(url, files={'file': opened_file})
+                response = requests.post(url, files={'file': opened_file}, timeout=10)
                 
                 # 4. Check status
                 if response.status_code == 201:
