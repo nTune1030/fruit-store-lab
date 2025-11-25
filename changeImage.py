@@ -14,6 +14,7 @@ SOURCE_DIR = Path.home() / "supplier-data/images"
 def process_image(file_path):
     """
     Opens an image, resizes, converts, and saves as JPEG.
+    Save them in the same path ~/supplier-data/images, with a JPEG extension.
     """
     try:
         with Image.open(file_path) as img:
@@ -37,6 +38,12 @@ def main():
     # Glob allows pattern matching (finding all .tiff files directly)
     for file_path in SOURCE_DIR.glob("*.tiff"):
         process_image(file_path)
+
+    # Incase file extension is not .tiff (eg. tif, TIFF, ...)
+    # Iterates over everything and filters inside
+    # for file_path in SOURCE_DIR.iterdir():
+    #     if file_path.suffix.lower() == ".tiff":
+    #         process_image(file_path)
 
 if __name__ == "__main__":
     main()
