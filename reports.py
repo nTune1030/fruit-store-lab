@@ -22,8 +22,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 
 DESC_PATH = Path.home() / "supplier-data/descriptions"
-# DESC_PATH = os.path.expanduser("~") + "/supplier-data/descriptions/"
-
 REPORT_FILE = "/tmp/processed.pdf"
 
 def generate_report(filename: str, title: str, paragraph: str):
