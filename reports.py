@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """
-Fruit Store Report Generator
-----------------------------
+reports.py
+----------
 This script compiles processed fruit data into a PDF report using ReportLab.
 
 Key Features:
@@ -16,11 +16,14 @@ Dependencies:
 
 import os
 from datetime import date
+from pathlib import Path
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
 
-DESC_PATH = os.path.expanduser("~") + "/supplier-data/descriptions/"
+DESC_PATH = Path.home() / "supplier-data/descriptions"
+# DESC_PATH = os.path.expanduser("~") + "/supplier-data/descriptions/"
+
 REPORT_FILE = "/tmp/processed.pdf"
 
 def generate_report(filename: str, title: str, paragraph: str):

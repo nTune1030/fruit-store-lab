@@ -24,7 +24,6 @@ def main():
     BODY = "All fruits are uploaded to our website successfully. A detailed list is attached to this email."
     ATTACHMENT_PATH = "/tmp/processed.pdf"
 
-    # Generate the PDF
     print("Generating PDF...")
     
     # process_data function from reports.py module

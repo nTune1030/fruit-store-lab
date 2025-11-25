@@ -20,7 +20,6 @@ def generate_email(sender: str, recipient: str, subject: str, body: str, attachm
     message.set_content(body)
 
     if attachment_path:
-        # Use 'os.path.basename' (Safer than split)
         attachment_filename = os.path.basename(attachment_path)
         
         # Guess the correct MIME type (e.g., 'application/pdf')

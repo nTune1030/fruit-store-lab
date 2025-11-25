@@ -4,7 +4,8 @@ from pathlib import Path
 from PIL import Image
 
 """
-Image Processing (changeImage.py)
+changeImage.py
+--------------
 Goal: Process raw images from ~/supplier-data/images/.
 Specs: Resize to 600x400, Format: .JPEG, Mode: RGB.
 """
@@ -30,12 +31,10 @@ def process_image(file_path):
         print(f"Error processing {file_path.name}: {e}")
 
 def main():
-    # Ensure directory exists before trying to loop
     if not SOURCE_DIR.exists():
         print(f"Error: Directory {SOURCE_DIR} does not exist.")
         return
 
-    # Glob allows pattern matching (finding all .tiff files directly)
     for file_path in SOURCE_DIR.glob("*.tiff"):
         process_image(file_path)
 
