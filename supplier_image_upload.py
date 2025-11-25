@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
 
+"""
+Supplier Image Upload Script
+----------------------------
+This script iterates through processed JPEG images in the supplier-data directory
+and uploads them to the Fruit Catalog web server via a POST request.
+
+Key Features:
+- Scans ~/supplier-data/images/ for .jpeg files.
+- Uploads each file to http://localhost/upload/.
+- Reports success (201 Created) or failure for each file.
+
+Dependencies:
+- requests: For handling HTTP POST operations.
+- pathlib: For file path manipulation.
+
+Usage:
+    ./supplier_image_upload.py
+"""
+
 import requests
 from pathlib import Path
 
